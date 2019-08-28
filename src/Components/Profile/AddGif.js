@@ -16,10 +16,14 @@ class AddGif extends Component {
     let { value } = target;
     this.setState({url: value})
   }
-  handleSubmit(e){
+  async handleSubmit(e){
     e.preventDefault();
-    addGif(this.state);
-    this.props.history.push('/')
+    let time = new Date().getTime();
+    let state = this.state;
+    state.time = time;
+    await addGif(state);
+    this.setState({url: ''});
+    this.props.history.push('/');
   }
   render(){
     return (
@@ -27,7 +31,7 @@ class AddGif extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="gifUrlInput">Gif URL</label>
-            <input name="url" type="text" className="form-control" onChange={this.handleChange} id="gifUrlInput" aria-describedby="gifInputHelp" placeholder="Enter Gif URL"/>
+            <input name="url" type="text" className="form-control" onChange={this.handleChange} value={this.state.url} id="gifUrlInput" aria-describedby="gifInputHelp" placeholder="Enter Gif URL"/>
             <small id="gifInputHelp" className="form-text text-muted">None of your user info will be shared or stored!.</small>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>

@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { getAllGifs } from './db/index.js';
+import { getAllGifs, checkForGifs } from './db/index.js';
 
 export default class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
       gifs: []
+    }
+    this.checkForUpdates = this.checkForUpdates.bind(this);
+  }
+  checkForUpdates(){
+    if (checkForGifs() === true){
+      let gifs = getAllGifs();
+      this.setState({gifs: gifs});
     }
   }
   async componentDidMount(){
